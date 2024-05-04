@@ -1,0 +1,1 @@
+React app to communicate with the smart lock contract
