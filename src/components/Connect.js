@@ -10,9 +10,12 @@ const ganache = require('ganache');
 var Owner;
 var Connected = false;
 var LockContract;
+var WS;
 
 function Connect ({_setLockNet, _locknet}) {
 	const ganacheUrl = 'ws://localhost:8545';
+	const wsUrl = 'ws://localhost:8546';
+
 	const [address, setAddress] = useState('');
 
 	const wsProvider = new Web3.providers.WebsocketProvider(ganacheUrl);
@@ -23,10 +26,19 @@ function Connect ({_setLockNet, _locknet}) {
 		const signers = await web3.eth.getAccounts();
 		
 		Owner = signers[1];
-		Connected = true;
-
+		
 		console.log("Connected to Lock network from:" + Owner);
 		console.log("Contract address is:" + LockContract._address);
+		return true;
+	}
+
+	async function createWebSocketInstance () {
+		WS = new WebSocket(wsUrl); 
+
+		WS.onopen = function () {
+			console.log("Socket opened");
+		};
+		return true;
 	}
 
 	return (
@@ -43,7 +55,9 @@ function Connect ({_setLockNet, _locknet}) {
 				disabled={Connected}
 				onClick={async () => {
 					console.log("Pressed");
-					await createContractInstance();
+					let ret1 = await createContractInstance();
+					let ret2 = await createWebSocketInstance();
+					Connected = ret1 && ret2;
 					if (Connected) {
 						_setLockNet({..._locknet,
 							'contract': LockContract, 'connected': true});
@@ -60,3 +74,4 @@ export {Connect};
 export {Owner};
 export {LockContract};
 export {Connected};
+export {WS};
