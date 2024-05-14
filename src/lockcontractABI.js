@@ -51,13 +51,13 @@ const ABI =
         {
           "indexed": true,
           "internalType": "address",
-          "name": "guest",
+          "name": "owner",
           "type": "address"
         },
         {
           "indexed": true,
           "internalType": "address",
-          "name": "owner",
+          "name": "guest",
           "type": "address"
         },
         {
@@ -455,24 +455,6 @@ const ABI =
       "type": "event"
     },
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_guest",
-          "type": "address"
-        },
-        {
-          "internalType": "bytes",
-          "name": "nonce0",
-          "type": "bytes"
-        }
-      ],
-      "name": "approveGuest",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "bidIncrement",
       "outputs": [
@@ -712,15 +694,15 @@ const ABI =
     },
     {
       "inputs": [],
-      "name": "registerGuest",
+      "name": "startBlock",
       "outputs": [
         {
-          "internalType": "bool",
-          "name": "success",
-          "type": "bool"
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
-      "stateMutability": "payable",
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -737,6 +719,24 @@ const ABI =
         }
       ],
       "name": "registerOwner",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_guest",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "nonce0",
+          "type": "bytes"
+        }
+      ],
+      "name": "approveGuest",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -774,26 +774,6 @@ const ABI =
           "internalType": "struct LockNonce",
           "name": "_nonce",
           "type": "tuple"
-        },
-        {
-          "internalType": "uint256[2]",
-          "name": "_proof0",
-          "type": "uint256[2]"
-        },
-        {
-          "internalType": "uint256[2][2]",
-          "name": "_proof1",
-          "type": "uint256[2][2]"
-        },
-        {
-          "internalType": "uint256[2]",
-          "name": "_proof2",
-          "type": "uint256[2]"
-        },
-        {
-          "internalType": "uint256[16]",
-          "name": "_publicSignals",
-          "type": "uint256[16]"
         }
       ],
       "name": "reqAuth",
@@ -839,26 +819,6 @@ const ABI =
           "internalType": "struct LockNonce",
           "name": "_nonce",
           "type": "tuple"
-        },
-        {
-          "internalType": "uint256[2]",
-          "name": "_proof0",
-          "type": "uint256[2]"
-        },
-        {
-          "internalType": "uint256[2][2]",
-          "name": "_proof1",
-          "type": "uint256[2][2]"
-        },
-        {
-          "internalType": "uint256[2]",
-          "name": "_proof2",
-          "type": "uint256[2]"
-        },
-        {
-          "internalType": "uint256[16]",
-          "name": "_publicSignals",
-          "type": "uint256[16]"
         }
       ],
       "name": "responseAuth",
@@ -868,15 +828,15 @@ const ABI =
     },
     {
       "inputs": [],
-      "name": "startBlock",
+      "name": "registerGuest",
       "outputs": [
         {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
+          "internalType": "bool",
+          "name": "success",
+          "type": "bool"
         }
       ],
-      "stateMutability": "view",
+      "stateMutability": "payable",
       "type": "function"
     }
   ]

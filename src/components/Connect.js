@@ -3,24 +3,32 @@ import { useState } from 'react';
 import LockABI from '../lockcontractABI'
 import '../App.css';
 
-// Provider
+// Provider (test network)
 const ganache = require('ganache');
 
-// Owner's address
+// Owner's address and state
 var Owner;
 var Connected = false;
 var LockContract;
+
+// Websocket to backend owner logic
 var WS;
 
+// Web3 global object 
+var web3;
+
+// Connects to the Lock network and backend owner logic
 function Connect ({_setLockNet, _locknet}) {
 	const ganacheUrl = 'ws://localhost:8545';
 	const wsUrl = 'ws://localhost:8546';
 
 	const [address, setAddress] = useState('');
 
+	// Add provider
 	const wsProvider = new Web3.providers.WebsocketProvider(ganacheUrl);
-	const web3 = new Web3(wsProvider);
+	web3 = new Web3(wsProvider);
 
+	// Create the contract instance
 	async function createContractInstance () {
 		LockContract = new web3.eth.Contract(LockABI.ABI, address);
 		const signers = await web3.eth.getAccounts();
@@ -32,6 +40,7 @@ function Connect ({_setLockNet, _locknet}) {
 		return true;
 	}
 
+	// Create the web socket instance to backend
 	async function createWebSocketInstance () {
 		WS = new WebSocket(wsUrl); 
 
@@ -75,3 +84,4 @@ export {Owner};
 export {LockContract};
 export {Connected};
 export {WS};
+export {web3};

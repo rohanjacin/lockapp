@@ -1,34 +1,41 @@
 import Web3  from 'web3';
 import { useState, useEffect } from 'react';
 import {Owner, LockContract, Connected, WS} from "./Connect";
-import { Buffer } from 'buffer';
 
+// Guest address and state
 var GuestApproved = false;
 var Guest = null;
+
+// Initial Nonce to be sent to the lock 
 var Nonce = null;
 
+// Accept addition of guest and approve, 
+// send intial nonce  
 function Approve ({_setGuestNonce, _guestnonce}) {
 	const [guest, setGuest] = useState('');
 	const [nonce, setNonce] = useState('');
 
+	// When connected listen to contract events
 	useEffect(() => {
-	 console.log("LOCK contract updated..");
-	 if (Connected == true) {
-	  console.log("LOCK connected(approve)..");
-	  listen();
-	 }
+		if (Connected == true) {
+			//console.log("LOCK connected(approve)..");
+			listen();
+		}
 	}, [Connected]);
 
+	// Update initial nonce when received from backend 
 	useEffect(() => {
-		console.log("Nonce0 updated:" + Nonce);
 		if (_guestnonce.nonce != '') {
-			console.log("_guestnonce.nonce updated");
+			console.log("nonce updated");
 			Nonce = _guestnonce.nonce;
-			approveGuest(Guest, Nonce);
+			//approveGuest(Guest, Nonce);
 		}
 	}, [nonce, _guestnonce.nonce]);
 
+	// Register for messages/events from the Lock contract
 	function listen () {
+
+		// Guest has registered
 		const subscription = LockContract.events.GuestRegistered();
 		subscription.on("data", async (event) => {
 			let data = event.returnValues;
@@ -37,23 +44,19 @@ function Approve ({_setGuestNonce, _guestnonce}) {
 
 			Guest = data.guest;
 			_setGuestNonce({..._guestnonce, 'guest': Guest});
-			// Send request to server handshake
+
+			// Send request to backend
 			let msg = {type: 'Request'};
 			WS.send(JSON.stringify(msg));	
 		});
 	}
 
+	// Approve Guest 
 	async function approveGuest(guest, nonce) {
-		console.log("in approveGuest");
 		console.log("Guest:" + Guest);
 		console.log("Nonce:" + Nonce);
-		console.log("Nonce(typeof):" + typeof(Nonce));
 
-		let _nonce0 = Buffer.from(Nonce);
-		//let _nonce0 = new Uint8Array();
-		console.log("_nonce0:" + typeof(_nonce0));
-
-		await LockContract.methods.approveGuest(Guest, _nonce0).send({from: Owner, gas: 1000000});		
+		await LockContract.methods.approveGuest(Guest, Nonce).send({from: Owner, gas: 1000000});		
 	}
 
 	return (
