@@ -1,17 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Owner, LockContract, Connected, WS, web3 } from "./Connect";
 import { Guest, Nonce, GuestApproved } from "./Approve";
+import Spinner from 'react-bootstrap/Spinner';
+
 import BN from "bn.js";
 
 // Challenge and Response values
 var Challenge = null;
 var Response = null;
+var OwnerProof = null;
 
 // Attempt to authorize guest by pushing the challenge to backend 
 // and forwarding the response from the backend to the lock 
 function Authorize ({_setChallengeResponse, _challengeresponse}) {
 	let [challenge, setChallenge] = useState('');
 	let [response, setResponse] = useState('');
+	let [ownerproof, setOwnerproof] = useState('');
 
 	// When connected listen to contract events
 	useEffect(() => {
@@ -37,6 +41,9 @@ function Authorize ({_setChallengeResponse, _challengeresponse}) {
 			Response = _challengeresponse.response;
 			response = Response;
 			setResponse(response);
+			OwnerProof = _challengeresponse.ownerproof;
+			ownerproof = OwnerProof;
+			setOwnerproof(ownerproof);
 			//approveGuest(Guest, Nonce);
 		}
 	}, [_challengeresponse.response]);
@@ -97,8 +104,13 @@ function Authorize ({_setChallengeResponse, _challengeresponse}) {
 		let hmac = Uint8Array.from(nonce.slice(163, 195));
 		const rspnonce = {nonce0, nonce1, seed, counter, hmac};
 
+		ownerproof = "Loading...";
+		setOwnerproof(ownerproof);
 		// Create proof here : TDB
-		await LockContract.methods.responseAuth(Guest, rspnonce).send({from: Owner, gas: 1000000});
+		let p = OwnerProof;
+		console.log("P:" + p);
+		await LockContract.methods.responseAuth(Guest, rspnonce,
+			p.proof[0], p.proof[1], p.proof[2], p.publicSignals).send({from: Owner, gas: 1000000});
 	}
 
 	return (
@@ -128,7 +140,21 @@ function Authorize ({_setChallengeResponse, _challengeresponse}) {
 			/>
 			&nbsp; (from Owner to Lock)
 			<br />
-			<br />			
+			<br />
+			Owner Proof :
+			&nbsp; &nbsp;			
+			<input placeholder={"groth16 proof format (A, B, C)" || {ownerproof} }
+				style={{height:"42px", width:"420px"}}
+				type="text"
+				onChange={(event) => {
+					console.log("ONCHANGE REesponse");
+					setOwnerproof(event.target.value)
+				}}
+				value={ownerproof}
+			/>
+			&nbsp; (from Owner to Lock contract)			
+			<br />
+			<br />									
 			<button
 				style={{padding:"12px", border:"none"}}			
 				disabled={!Connected}

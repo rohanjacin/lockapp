@@ -819,6 +819,26 @@ const ABI =
           "internalType": "struct LockNonce",
           "name": "_nonce",
           "type": "tuple"
+        },
+        {
+          "internalType": "uint256[2]",
+          "name": "_proof0",
+          "type": "uint256[2]"
+        },
+        {
+          "internalType": "uint256[2][2]",
+          "name": "_proof1",
+          "type": "uint256[2][2]"
+        },
+        {
+          "internalType": "uint256[2]",
+          "name": "_proof2",
+          "type": "uint256[2]"
+        },
+        {
+          "internalType": "uint256[16]",
+          "name": "_publicSignals",
+          "type": "uint256[16]"
         }
       ],
       "name": "responseAuth",

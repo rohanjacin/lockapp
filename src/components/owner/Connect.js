@@ -1,5 +1,5 @@
 import Web3  from 'web3';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LockABI from '../../lockcontractABI'
 import '../../App.css';
 
@@ -23,6 +23,14 @@ function Connect ({_setLockNet, _locknet}) {
 	const wsUrl = 'ws://localhost:8546';
 
 	const [address, setAddress] = useState('');
+	let [owner, setOwner] = useState('');
+
+	useEffect(() => {
+		if (Connected == true) {
+			owner = Owner;
+			setOwner(owner);
+		}
+	}, [Owner]);
 
 	// Add provider
 	const wsProvider = new Web3.providers.WebsocketProvider(ganacheUrl);
@@ -52,6 +60,9 @@ function Connect ({_setLockNet, _locknet}) {
 
 	return (
 		<div className="Connect">
+			Address: {owner}
+			<br />
+			<br />
 			<h2>Step 1 : Connect to Lock contract</h2>
 			Contract address :
 			&nbsp; &nbsp;

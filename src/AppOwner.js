@@ -16,7 +16,7 @@ function AppOwner () {
   const [guestnonce, setGuestNonce] = useState(gueststatus);
 
   // Challenge Response values from nested Approve component
-  const challengestatus = {challenge: '', response: ''}; 
+  const challengestatus = {challenge: '', response: '', proof: ''}; 
   const [challengeresponse, setChallengeResponse] = useState(challengestatus);
 
   // Lock connected to network handler 
@@ -61,15 +61,15 @@ function AppOwner () {
           console.log("Response from server");
 
           // Update response in Authorize component
-          setChallengeResponse({...challengeresponse, 'response': msg.nonce.data})
+          setChallengeResponse({...challengeresponse,
+            'response': msg.nonce.data, 'ownerproof': msg.ownerproof})
         } 
       }
   }
 
   return (
     <div className="App">
-      <h1>ZKP Lock Contract App (Owner)</h1>
-      <br />      
+      <h1>ZKP Lock Contract App (Owner)</h1>      
       <Connect _setLockNet={setLockNet}
                _locknet={locknet}/>
       <br />

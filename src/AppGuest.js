@@ -67,7 +67,6 @@ function AppGuest () {
   return (
     <div className="App">
       <h1>ZKP Lock Contract App (Guest)</h1>
-      <br />      
       <Connect _setLockNet={setLockNet}
                _locknet={locknet}/>
       <br />               
