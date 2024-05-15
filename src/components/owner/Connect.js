@@ -1,7 +1,7 @@
 import Web3  from 'web3';
 import { useState } from 'react';
-import LockABI from '../lockcontractABI'
-import '../App.css';
+import LockABI from '../../lockcontractABI'
+import '../../App.css';
 
 // Provider (test network)
 const ganache = require('ganache');
@@ -53,14 +53,18 @@ function Connect ({_setLockNet, _locknet}) {
 	return (
 		<div className="Connect">
 			<h2>Step 1 : Connect to Lock contract</h2>
-			<input placeholder="Enter Lock contract address"
-				style={{height:"42px", width:"690px"}}
+			Contract address :
+			&nbsp; &nbsp;
+			<input placeholder="Ethereum address format"
+				style={{height:"42px", width:"420px"}}
 				type="text"
 				onChange={(event) => setAddress(event.target.value)}
 				value={address}
 			/>
-			&nbsp; &nbsp;
+      		<br />
+      		<br />
 			<button
+				style={{padding:"12px", border:"none"}}			
 				disabled={Connected}
 				onClick={async () => {
 					console.log("Pressed");

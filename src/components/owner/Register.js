@@ -17,14 +17,18 @@ function Register () {
 	return(
 		<div className="Register">
 			<h2>Step 2 : Register Room</h2>
-			<input placeholder="Enter base price"
+			Bid base price :
+			&nbsp; &nbsp;			
+			<input placeholder="gwei"
 				style={{height:"42px", width:"420px"}}
 				type="text"
 				onChange={(event) => setBasePrice(event.target.value)}
 				value={basePrice}
 			/>
-			&nbsp; &nbsp;
+			<br />
+			<br />
 			<button
+				style={{padding:"12px", border:"none"}}			
 				disabled={BasePriceSet}
 				onClick={async () => {
 					console.log("BPressed");
@@ -35,7 +39,7 @@ function Register () {
 					}
 				}}
 			>
-				"Set Base Price"
+				Set Base Price
 			</button>
 		</div>
 	)

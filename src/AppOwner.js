@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Connect, WS } from "./components/Connect";
-import { Register } from "./components/Register";
-import { Approve } from "./components/Approve";
-import { Authorize } from "./components/Authorize";
+import { Connect, WS } from "./components/owner/Connect";
+import { Register } from "./components/owner/Register";
+import { Approve } from "./components/owner/Approve";
+import { Authorize } from "./components/owner/Authorize";
 import './App.css';
 
-function App () {
+function AppOwner () {
 
   // Lock status from nested Connect component
   const lockstatus = {connected: false, contract: ''}; 
@@ -69,15 +69,19 @@ function App () {
   return (
     <div className="App">
       <h1>ZKP Lock Contract App (Owner)</h1>
+      <br />      
       <Connect _setLockNet={setLockNet}
                _locknet={locknet}/>
+      <br />
       <Register />
+      <br />      
       <Approve _setGuestNonce={setGuestNonce}
                _guestnonce={guestnonce}/>
+      <br />      
       <Authorize _setChallengeResponse={setChallengeResponse}
                _challengeresponse={challengeresponse}/>
     </div>
   )
 }
 
-export default App
+export default AppOwner

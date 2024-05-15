@@ -19,6 +19,15 @@
 }
 
 .Approve {
+  align-items: left;
+  text-align: center;
+  font: "30px";
+  width: "690px";
+  height: "42px";
+  color: ;
+}
+
+.Authorize {
   text-align: center;
   font: "30px";
   width: "690px";

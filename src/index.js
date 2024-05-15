@@ -1,13 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import AppGuest from './AppGuest';
+import AppOwner from './AppOwner';
 import reportWebVitals from './reportWebVitals';
 
+const role = process.env.REACT_APP_role;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    {(role == "owner") ? (
+      <>
+      <AppOwner />
+      </>
+    ) : (
+      <>
+      <AppGuest />
+      </>
+    )}
   </React.StrictMode>
 );
 

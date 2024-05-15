@@ -10,8 +10,8 @@ var Response = null;
 // Attempt to authorize guest by pushing the challenge to backend 
 // and forwarding the response from the backend to the lock 
 function Authorize ({_setChallengeResponse, _challengeresponse}) {
-	const [challenge, setChallenge] = useState('');
-	const [response, setResponse] = useState('');
+	let [challenge, setChallenge] = useState('');
+	let [response, setResponse] = useState('');
 
 	// When connected listen to contract events
 	useEffect(() => {
@@ -28,16 +28,18 @@ function Authorize ({_setChallengeResponse, _challengeresponse}) {
 			Challenge = _challengeresponse.challenge;
 			//approveGuest(Guest, Nonce);
 		}
-	}, [challenge, _challengeresponse.challenge]);
+	}, [_challengeresponse.challenge]);
 
 	// Update response when received from backend (owner)
 	useEffect(() => {
 		if (_challengeresponse.response != '') {
 			console.log("response updated");
 			Response = _challengeresponse.response;
+			response = Response;
+			setResponse(response);
 			//approveGuest(Guest, Nonce);
 		}
-	}, [response, _challengeresponse.response]);
+	}, [_challengeresponse.response]);
 
 	// Register for messages/events from the Lock contract
 	function listen () {
@@ -50,7 +52,7 @@ function Authorize ({_setChallengeResponse, _challengeresponse}) {
 			console.log("Owner:" + data.owner);
 			console.log("Challenge:" + JSON.stringify(data.ctx.locknonce));
 
-			Challenge = data.ctx.locknonce;
+			//Challenge = data.ctx.locknonce;
 			_setChallengeResponse({..._challengeresponse, 'challenge': data.ctx.locknonce});
 			
 			// Send request to server handshake
@@ -70,6 +72,9 @@ function Authorize ({_setChallengeResponse, _challengeresponse}) {
 			let lock_nounce = new Array(65 + 32 + 65 + 1 + 32);
 			lock_nounce = [...nonce0, ...nonce1, ...seed, ...counter, ...hmac];
 			console.log("Challenge(sent):" + JSON.stringify(lock_nounce));
+			Challenge = lock_nounce; 
+			challenge = Challenge;
+			setChallenge(challenge);
 
 			// Send challenge to backend
 			let msg = {type: 'Challenge', nonce: lock_nounce};
@@ -99,14 +104,20 @@ function Authorize ({_setChallengeResponse, _challengeresponse}) {
 	return (
 		<div className="Authorize">
 			<h2>Step 4 : Authorize Guest</h2>
-			<input placeholder="Challenge: (from Lock to Owner)"
+			Challenge :
+			&nbsp; &nbsp;
+			<input placeholder="decimal byte array (195 bytes)"
 				style={{height:"42px", width:"420px"}}
 				type="text"
 				onChange={(event) => setChallenge(event.target.value)}
 				value={challenge}
 			/>
+			&nbsp; (from Lock to Owner)
 			<br />
-			<input placeholder="Response (from Owner to Lock)"
+			<br />
+			Response :
+			&nbsp; &nbsp;
+			<input placeholder="decimal byte array (195 bytes)"
 				style={{height:"42px", width:"420px"}}
 				type="text"
 				onChange={(event) => {
@@ -115,8 +126,11 @@ function Authorize ({_setChallengeResponse, _challengeresponse}) {
 				}}
 				value={response}
 			/>
-			&nbsp; &nbsp;
+			&nbsp; (from Owner to Lock)
+			<br />
+			<br />			
 			<button
+				style={{padding:"12px", border:"none"}}			
 				disabled={!Connected}
 				onClick={async () => {
 					console.log("APressed");
@@ -124,7 +138,7 @@ function Authorize ({_setChallengeResponse, _challengeresponse}) {
 					authorizeGuest(Guest);
 				}}
 			>
-				"Authorize Guest"
+				Authorize Guest
 			</button>
 		</div>
 	)
