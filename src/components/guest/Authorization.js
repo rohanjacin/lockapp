@@ -106,7 +106,7 @@ function Authorization ({_setChallengeResponse, _challengeresponse}) {
 				onChange={(event) => setChallenge(event.target.value)}
 				value={challenge}
 			/>
-			&nbsp; (from Lock to Owner)
+			&nbsp; (from Lock to Owner via Guest)
 			<br />
 			<br />
 			Off-chain secret :
@@ -130,7 +130,7 @@ function Authorization ({_setChallengeResponse, _challengeresponse}) {
 				onChange={(event) => setResponse(event.target.value)}
 				value={response}
 			/>
-			&nbsp; (from Lock to Owner)						
+			&nbsp; (from Owner to Lock via Guest)						
 			&nbsp; &nbsp;
 			<br />
 			<br />			

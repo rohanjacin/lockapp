@@ -25,6 +25,7 @@ function Register () {
 				onChange={(event) => setBasePrice(event.target.value)}
 				value={basePrice}
 			/>
+			&nbsp; for room
 			<br />
 			<br />
 			<button

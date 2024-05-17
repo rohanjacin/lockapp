@@ -42,7 +42,7 @@ function Authorize ({_setChallengeResponse, _challengeresponse}) {
 			response = Response;
 			setResponse(response);
 			OwnerProof = _challengeresponse.ownerproof;
-			ownerproof = OwnerProof;
+			ownerproof = JSON.stringify(OwnerProof);
 			setOwnerproof(ownerproof);
 			//approveGuest(Guest, Nonce);
 		}
@@ -108,7 +108,7 @@ function Authorize ({_setChallengeResponse, _challengeresponse}) {
 		setOwnerproof(ownerproof);
 		// Create proof here : TDB
 		let p = OwnerProof;
-		console.log("P:" + p);
+		console.log("P:" + JSON.stringify(p));
 		await LockContract.methods.responseAuth(Guest, rspnonce,
 			p.proof[0], p.proof[1], p.proof[2], p.publicSignals).send({from: Owner, gas: 1000000});
 	}
@@ -124,7 +124,7 @@ function Authorize ({_setChallengeResponse, _challengeresponse}) {
 				onChange={(event) => setChallenge(event.target.value)}
 				value={challenge}
 			/>
-			&nbsp; (from Lock to Owner)
+			&nbsp; (from Lock to Owner via Guest)
 			<br />
 			<br />
 			Response :
@@ -138,7 +138,7 @@ function Authorize ({_setChallengeResponse, _challengeresponse}) {
 				}}
 				value={response}
 			/>
-			&nbsp; (from Owner to Lock)
+			&nbsp; (from Owner to Lock via Guest)
 			<br />
 			<br />
 			Owner Proof :
@@ -152,7 +152,7 @@ function Authorize ({_setChallengeResponse, _challengeresponse}) {
 				}}
 				value={ownerproof}
 			/>
-			&nbsp; (from Owner to Lock contract)			
+			&nbsp; (from Owner to contract)			
 			<br />
 			<br />									
 			<button

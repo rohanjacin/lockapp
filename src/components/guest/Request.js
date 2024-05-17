@@ -3,10 +3,12 @@ import { useState, useEffect } from 'react';
 import { Guest, LockContract, Connected } from "./Connect";
 
 var BidPriceSet = false;
+var BaseBidPrice = '';
 
 function Request () {
 	const [bidPrice, setBidPrice] = useState('');
 	let [owner, setOwner] = useState('');
+	let [basebid, setBasebid] = useState('');
 
 	// When connected listen to contract events
 	useEffect(() => {
@@ -14,7 +16,6 @@ function Request () {
 			listen();
 		}
 	}, [Connected]);
-
 
 	// Register for messages/events from the Lock contract
 	function listen () {
@@ -25,7 +26,9 @@ function Request () {
 			console.log("bidowner:" +  data.owner);
 			console.log("price:" +  data.price);
 			owner = data.owner;
+			BaseBidPrice = data.price;
 			setOwner(owner);
+			setBasebid(BaseBidPrice);
 		});
 	}
 
@@ -47,7 +50,9 @@ function Request () {
 				type="text"
 				onChange={(event) => setOwner(event.target.value)}
 				value={owner}
-			/>			
+			/>
+			&nbsp;
+			has set base bid : {basebid}
 			<br />
 			<br />
 			Bid Price :
@@ -58,6 +63,7 @@ function Request () {
 				onChange={(event) => setBidPrice(event.target.value)}
 				value={bidPrice}
 			/>
+			&nbsp; for room
 			<br />
 			<br />
 			<button

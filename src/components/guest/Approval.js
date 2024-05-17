@@ -76,7 +76,7 @@ function Approval ({_setOwnerNonce, _ownernonce}) {
 				}}
 				value={nonce}
 			/>
-			&nbsp; (from Owner to Lock)
+			&nbsp; (from Owner to Lock via Guest)
 		</div>
 	)
 }

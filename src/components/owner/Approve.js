@@ -75,6 +75,7 @@ function Approve ({_setGuestNonce, _guestnonce}) {
 				onChange={(event) => setGuest(event.target.value)}
 				value={guest}
 			/>
+			&nbsp; for room			
 			<br />
 			<br />
 			Nonce :
@@ -88,7 +89,7 @@ function Approve ({_setGuestNonce, _guestnonce}) {
 				}}
 				value={nonce}
 			/>
-			&nbsp; (from Owner to Lock)
+			&nbsp; (from Owner to Lock vi Guest)
 			<br />
 			<br />
 			<button
