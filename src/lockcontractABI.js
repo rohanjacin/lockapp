@@ -9,17 +9,12 @@ const ABI =
         },
         {
           "internalType": "address",
-          "name": "_auction",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
           "name": "_ownerverifier",
           "type": "address"
         },
         {
           "internalType": "address",
-          "name": "_guestverifier",
+          "name": "_groupverifier",
           "type": "address"
         }
       ],
@@ -51,123 +46,20 @@ const ABI =
         {
           "indexed": true,
           "internalType": "address",
-          "name": "owner",
+          "name": "guest",
           "type": "address"
         },
         {
           "indexed": true,
           "internalType": "address",
-          "name": "guest",
+          "name": "owner",
           "type": "address"
         },
         {
-          "components": [
-            {
-              "internalType": "uint16",
-              "name": "counter",
-              "type": "uint16"
-            },
-            {
-              "internalType": "bytes",
-              "name": "nonce0",
-              "type": "bytes"
-            },
-            {
-              "internalType": "uint256",
-              "name": "id",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "price",
-              "type": "uint256"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "bytes",
-                  "name": "nonce0",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "nonce1",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "seed",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "counter",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "hmac",
-                  "type": "bytes"
-                }
-              ],
-              "internalType": "struct LockNonce",
-              "name": "locknonce",
-              "type": "tuple"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "bytes",
-                  "name": "nonce0",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "nonce1",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "seed",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "counter",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "hmac",
-                  "type": "bytes"
-                }
-              ],
-              "internalType": "struct LockNonce",
-              "name": "ownernonce",
-              "type": "tuple"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "uint256",
-                  "name": "p",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "ts",
-                  "type": "uint256"
-                }
-              ],
-              "internalType": "struct LockZKP.GuestProof",
-              "name": "gproof",
-              "type": "tuple"
-            }
-          ],
           "indexed": false,
-          "internalType": "struct LockZKP.GuestSession",
-          "name": "ctx",
-          "type": "tuple"
+          "internalType": "bytes",
+          "name": "nonce",
+          "type": "bytes"
         }
       ],
       "name": "GuestApproved",
@@ -187,6 +79,18 @@ const ABI =
           "internalType": "address",
           "name": "owner",
           "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "bid",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "groupRoot",
+          "type": "uint256"
         }
       ],
       "name": "GuestRegistered",
@@ -210,110 +114,34 @@ const ABI =
         {
           "components": [
             {
-              "internalType": "uint16",
-              "name": "counter",
-              "type": "uint16"
-            },
-            {
               "internalType": "bytes",
               "name": "nonce0",
               "type": "bytes"
             },
             {
-              "internalType": "uint256",
-              "name": "id",
-              "type": "uint256"
+              "internalType": "bytes",
+              "name": "nonce1",
+              "type": "bytes"
             },
             {
-              "internalType": "uint256",
-              "name": "price",
-              "type": "uint256"
+              "internalType": "bytes",
+              "name": "seed",
+              "type": "bytes"
             },
             {
-              "components": [
-                {
-                  "internalType": "bytes",
-                  "name": "nonce0",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "nonce1",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "seed",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "counter",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "hmac",
-                  "type": "bytes"
-                }
-              ],
-              "internalType": "struct LockNonce",
-              "name": "locknonce",
-              "type": "tuple"
+              "internalType": "bytes",
+              "name": "counter",
+              "type": "bytes"
             },
             {
-              "components": [
-                {
-                  "internalType": "bytes",
-                  "name": "nonce0",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "nonce1",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "seed",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "counter",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "hmac",
-                  "type": "bytes"
-                }
-              ],
-              "internalType": "struct LockNonce",
-              "name": "ownernonce",
-              "type": "tuple"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "uint256",
-                  "name": "p",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "ts",
-                  "type": "uint256"
-                }
-              ],
-              "internalType": "struct LockZKP.GuestProof",
-              "name": "gproof",
-              "type": "tuple"
+              "internalType": "bytes",
+              "name": "hmac",
+              "type": "bytes"
             }
           ],
           "indexed": false,
-          "internalType": "struct LockZKP.GuestSession",
-          "name": "ctx",
+          "internalType": "struct LockNonce",
+          "name": "nonce",
           "type": "tuple"
         }
       ],
@@ -338,110 +166,34 @@ const ABI =
         {
           "components": [
             {
-              "internalType": "uint16",
-              "name": "counter",
-              "type": "uint16"
-            },
-            {
               "internalType": "bytes",
               "name": "nonce0",
               "type": "bytes"
             },
             {
-              "internalType": "uint256",
-              "name": "id",
-              "type": "uint256"
+              "internalType": "bytes",
+              "name": "nonce1",
+              "type": "bytes"
             },
             {
-              "internalType": "uint256",
-              "name": "price",
-              "type": "uint256"
+              "internalType": "bytes",
+              "name": "seed",
+              "type": "bytes"
             },
             {
-              "components": [
-                {
-                  "internalType": "bytes",
-                  "name": "nonce0",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "nonce1",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "seed",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "counter",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "hmac",
-                  "type": "bytes"
-                }
-              ],
-              "internalType": "struct LockNonce",
-              "name": "locknonce",
-              "type": "tuple"
+              "internalType": "bytes",
+              "name": "counter",
+              "type": "bytes"
             },
             {
-              "components": [
-                {
-                  "internalType": "bytes",
-                  "name": "nonce0",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "nonce1",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "seed",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "counter",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "hmac",
-                  "type": "bytes"
-                }
-              ],
-              "internalType": "struct LockNonce",
-              "name": "ownernonce",
-              "type": "tuple"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "uint256",
-                  "name": "p",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "ts",
-                  "type": "uint256"
-                }
-              ],
-              "internalType": "struct LockZKP.GuestProof",
-              "name": "gproof",
-              "type": "tuple"
+              "internalType": "bytes",
+              "name": "hmac",
+              "type": "bytes"
             }
           ],
           "indexed": false,
-          "internalType": "struct LockZKP.GuestSession",
-          "name": "ctx",
+          "internalType": "struct LockNonce",
+          "name": "nonce",
           "type": "tuple"
         },
         {
@@ -455,58 +207,31 @@ const ABI =
       "type": "event"
     },
     {
-      "inputs": [],
-      "name": "bidIncrement",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "canceled",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "endBlock",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
+        {
+          "internalType": "address",
+          "name": "_guest",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "nonce",
+          "type": "bytes"
+        }
+      ],
+      "name": "approveGuest",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "groupverifier",
+      "outputs": [
         {
           "internalType": "address",
           "name": "",
           "type": "address"
-        }
-      ],
-      "name": "fundsByBidder",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -523,18 +248,13 @@ const ABI =
       "name": "guestSessions",
       "outputs": [
         {
-          "internalType": "uint16",
-          "name": "counter",
-          "type": "uint16"
-        },
-        {
-          "internalType": "bytes",
-          "name": "nonce0",
-          "type": "bytes"
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
         },
         {
           "internalType": "uint256",
-          "name": "id",
+          "name": "counter",
           "type": "uint256"
         },
         {
@@ -543,136 +263,13 @@ const ABI =
           "type": "uint256"
         },
         {
-          "components": [
-            {
-              "internalType": "bytes",
-              "name": "nonce0",
-              "type": "bytes"
-            },
-            {
-              "internalType": "bytes",
-              "name": "nonce1",
-              "type": "bytes"
-            },
-            {
-              "internalType": "bytes",
-              "name": "seed",
-              "type": "bytes"
-            },
-            {
-              "internalType": "bytes",
-              "name": "counter",
-              "type": "bytes"
-            },
-            {
-              "internalType": "bytes",
-              "name": "hmac",
-              "type": "bytes"
-            }
-          ],
-          "internalType": "struct LockNonce",
-          "name": "locknonce",
-          "type": "tuple"
-        },
-        {
-          "components": [
-            {
-              "internalType": "bytes",
-              "name": "nonce0",
-              "type": "bytes"
-            },
-            {
-              "internalType": "bytes",
-              "name": "nonce1",
-              "type": "bytes"
-            },
-            {
-              "internalType": "bytes",
-              "name": "seed",
-              "type": "bytes"
-            },
-            {
-              "internalType": "bytes",
-              "name": "counter",
-              "type": "bytes"
-            },
-            {
-              "internalType": "bytes",
-              "name": "hmac",
-              "type": "bytes"
-            }
-          ],
-          "internalType": "struct LockNonce",
-          "name": "ownernonce",
-          "type": "tuple"
-        },
-        {
-          "components": [
-            {
-              "internalType": "uint256",
-              "name": "p",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "ts",
-              "type": "uint256"
-            }
-          ],
-          "internalType": "struct LockZKP.GuestProof",
-          "name": "gproof",
-          "type": "tuple"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "highestBidder",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "highestBindingBid",
-      "outputs": [
-        {
           "internalType": "uint256",
-          "name": "",
+          "name": "groupRoot",
           "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "ipfsHash",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "owner",
-      "outputs": [
+        },
         {
           "internalType": "address",
-          "name": "",
+          "name": "owner",
           "type": "address"
         }
       ],
@@ -693,16 +290,98 @@ const ABI =
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "startBlock",
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "ownerSessions",
       "outputs": [
         {
+          "internalType": "bool",
+          "name": "registered",
+          "type": "bool"
+        },
+        {
           "internalType": "uint256",
-          "name": "",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "counter",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "basePrice",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "groupRoot",
           "type": "uint256"
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "merkleTreeDepth",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "merkleTreeRoot",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nullifier",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "message",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "scope",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256[8]",
+              "name": "points",
+              "type": "uint256[8]"
+            }
+          ],
+          "internalType": "struct SemaphoreProof",
+          "name": "proof",
+          "type": "tuple"
+        }
+      ],
+      "name": "registerGuest",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "payable",
       "type": "function"
     },
     {
@@ -716,6 +395,48 @@ const ABI =
           "internalType": "string",
           "name": "_ipfsHash",
           "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_groupRoot",
+          "type": "uint256"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "merkleTreeDepth",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "merkleTreeRoot",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nullifier",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "message",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "scope",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256[8]",
+              "name": "points",
+              "type": "uint256[8]"
+            }
+          ],
+          "internalType": "struct SemaphoreProof",
+          "name": "proof",
+          "type": "tuple"
         }
       ],
       "name": "registerOwner",
@@ -727,22 +448,9 @@ const ABI =
       "inputs": [
         {
           "internalType": "address",
-          "name": "_guest",
+          "name": "_owner",
           "type": "address"
         },
-        {
-          "internalType": "bytes",
-          "name": "nonce0",
-          "type": "bytes"
-        }
-      ],
-      "name": "approveGuest",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
         {
           "components": [
             {
@@ -773,6 +481,43 @@ const ABI =
           ],
           "internalType": "struct LockNonce",
           "name": "_nonce",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "merkleTreeDepth",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "merkleTreeRoot",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nullifier",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "message",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "scope",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256[8]",
+              "name": "points",
+              "type": "uint256[8]"
+            }
+          ],
+          "internalType": "struct SemaphoreProof",
+          "name": "proof",
           "type": "tuple"
         }
       ],
@@ -844,19 +589,6 @@ const ABI =
       "name": "responseAuth",
       "outputs": [],
       "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "registerGuest",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "success",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "payable",
       "type": "function"
     }
   ]

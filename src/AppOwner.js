@@ -55,7 +55,7 @@ function AppOwner () {
           console.log("Nonce from server");
 
           // Update nonce in Approve component
-          setGuestNonce({...guestnonce, 'nonce': msg.nonce0.data})
+          setGuestNonce({...guestnonce, 'nonce': msg.nonce.data})
         }
         else if (msg.type == 'Response') {
           console.log("Response from server");

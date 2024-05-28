@@ -1,6 +1,7 @@
 import Web3  from 'web3';
 import { useState, useEffect } from 'react';
-import {Owner, LockContract} from "./Connect";
+import {Owner, LockContract, OwnerIdentity, OwnerGroup, OwnerGroupInfo} from "./Connect";
+import { generateProof } from '@semaphore-protocol/proof';
 
 var BasePriceSet = false;
 
@@ -10,7 +11,12 @@ function Register () {
 	async function registerRoom () {
 		let ipfsHash = 'dummy';
 
-		await LockContract.methods.registerOwner(basePrice, ipfsHash).send({from: Owner, gas: 1000000});
+		let message = "hello";
+		let scope = OwnerGroup.root;
+		const proof = await generateProof(OwnerIdentity, OwnerGroup, message, scope);
+
+		await LockContract.methods.registerOwner(basePrice, ipfsHash, OwnerGroupInfo.root, proof).
+							send({from: Owner, gas: 1000000});
 		console.log("registerRoom");
 	}
 

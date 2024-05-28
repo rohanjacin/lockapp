@@ -16,6 +16,10 @@ function AppGuest () {
   const ownerstatus = {owner: '', nonce: ''}; 
   const [ownernonce, setGuestNonce] = useState(ownerstatus);
 
+  // Base bid price (owner) from nested Request component
+  const basebidstatus = {bbid: ''}; 
+  const [basebid, setBaseBid] = useState(basebidstatus);
+
   // Challenge Response values from nested Authorization component
   const challengestatus = {challenge: '', response: ''}; 
   const [challengeresponse, setChallengeResponse] = useState(challengestatus);
@@ -28,6 +32,15 @@ function AppGuest () {
       listenServerEvents();
     }
   }, [lockstatus]);
+
+  // Base bid updated 
+  useEffect(() => {
+    if (locknet.connected == true) {
+     if (basebidstatus.bbid != '') {
+        console.log("Base Bid updated..");
+     }
+    }
+  }, [basebidstatus]);
 
   // Owner added and Nonce updated handler 
   useEffect(() => {
@@ -70,7 +83,8 @@ function AppGuest () {
       <Connect _setLockNet={setLockNet}
                _locknet={locknet}/>
       <br />               
-      <Request />
+      <Request _setBasebid={setBaseBid}
+               _basebid={basebid}/>
       <br />
       <Approval _setOwnerNonce={setGuestNonce}
                _ownernonce={ownernonce}/>

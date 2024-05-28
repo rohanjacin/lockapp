@@ -1,14 +1,15 @@
 import Web3  from 'web3';
 import { useState, useEffect } from 'react';
-import { Guest, LockContract, Connected } from "./Connect";
+import { Guest, LockContract, Connected, GuestIdentity, 
+		 OwnerGroup, OwnerGroupInfo } from "./Connect";
+import { generateProof } from "@semaphore-protocol/proof";
 
 var BidPriceSet = false;
 var BaseBidPrice = '';
 
-function Request () {
+function Request ({_setBasebid, _basebid}) {
 	const [bidPrice, setBidPrice] = useState('');
 	let [owner, setOwner] = useState('');
-	let [basebid, setBasebid] = useState('');
 
 	// When connected listen to contract events
 	useEffect(() => {
@@ -27,16 +28,28 @@ function Request () {
 			console.log("price:" +  data.price);
 			owner = data.owner;
 			BaseBidPrice = data.price;
+			_setBasebid({..._basebid, 'bbid': BaseBidPrice});
 			setOwner(owner);
-			setBasebid(BaseBidPrice);
 		});
 	}
 
 	async function requestRoom () {
 		let price = 110;
+		let scope = OwnerGroupInfo.root;
+		let message = "hello";
+		let proof = {};
+		let gas = 1000000;
 
-		await LockContract.methods.registerGuest().send(
-				{from: Guest, value: price, gas: 1000000});
+		if (GuestIdentity) {
+			proof = await generateProof(GuestIdentity, OwnerGroup, message, scope);
+			gas = 0;
+			console.log("Proof:",  proof);
+		}
+
+		console.log("Owneris:",  owner);
+
+		await LockContract.methods.registerGuest(owner, proof).send(
+				{from: Guest, value: price, gas: gas});
 		console.log("registerGuest");
 	}
 
@@ -51,8 +64,7 @@ function Request () {
 				onChange={(event) => setOwner(event.target.value)}
 				value={owner}
 			/>
-			&nbsp;
-			has set base bid : {basebid}
+			&nbsp; basebid: {BaseBidPrice}
 			<br />
 			<br />
 			Bid Price :

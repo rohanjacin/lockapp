@@ -6,6 +6,8 @@ import AppOwner from './AppOwner';
 import reportWebVitals from './reportWebVitals';
 
 const role = process.env.REACT_APP_role;
+//const role = "owner";
+console.log("role:" + role);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Guest, LockContract, Connected, WS, web3 } from "./Connect";
+import { Guest, LockContract, Connected, WS, web3,
+		 OwnerGroup, OwnerGroupInfo, GuestIdentity } from "./Connect";
 import { Owner, Nonce, OwnerApproved, Approval } from "./Approval";
+import { Identity } from '@semaphore-protocol/identity';
+import { generateProof } from '@semaphore-protocol/proof';
+
 import BN from "bn.js";
 
 // Challenge and Response values
@@ -50,9 +54,9 @@ function Authorization ({_setChallengeResponse, _challengeresponse}) {
 			console.log("Guest:" + data.guest);
 			console.log("Owner:" + data.owner);
 			console.log("Owner verified?:" + data.isOwnerVerified);
-			console.log("Response:" + JSON.stringify(data.ctx.ownernonce));
+			console.log("Response:" + JSON.stringify(data.nonce));
 
-			let ownernonce = data.ctx.ownernonce;
+			let ownernonce = data.nonce;
 			let nonce0 = ownernonce[0].split("0x");
 			let nonce1 = ownernonce[1].split("0x");
 			let seed = ownernonce[2].split("0x");
@@ -91,8 +95,15 @@ function Authorization ({_setChallengeResponse, _challengeresponse}) {
 		let hmac = Uint8Array.from(nonce.slice(163, 195));
 		const __challenge = {nonce0, nonce1, seed, counter, hmac};
 
+		// Identity exists, generate proof
+		let scope = OwnerGroupInfo.root;
+		let message = "let-me-in";
+
+		let proof = await generateProof(GuestIdentity, OwnerGroup, message, scope);
+
 		// Create proof here : TDB
-		await LockContract.methods.reqAuth(__challenge).send({from: Guest, gas: 1000000});
+		await LockContract.methods.reqAuth(Owner, __challenge, proof).
+								send({from: Guest, gas: 1000000});
 	}
 
 	return (

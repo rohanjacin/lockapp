@@ -1,15 +1,22 @@
 import Web3  from 'web3';
 import { useState, useEffect } from 'react';
+import { Identity } from '@semaphore-protocol/identity';
+import { Group } from '@semaphore-protocol/group';
 import LockABI from '../../lockcontractABI'
 import '../../App.css';
 
-// Provider (test network)
+// Provider (ganache or metamask)
+const PROVIDER = process.env.REACT_APP_provider;
+const SIGNER_INDEX = process.env.REACT_APP_signer_index;
 const ganache = require('ganache');
 
 // Owner's address and state
 var Owner;
 var Connected = false;
 var LockContract;
+var OwnerIdentity;
+var OwnerGroup;
+var OwnerGroupInfo;
 
 // Websocket to backend owner logic
 var WS;
@@ -32,16 +39,13 @@ function Connect ({_setLockNet, _locknet}) {
 		}
 	}, [Owner]);
 
-	// Add provider
-	const wsProvider = new Web3.providers.WebsocketProvider(ganacheUrl);
-	web3 = new Web3(wsProvider);
-
 	// Create the contract instance
 	async function createContractInstance () {
 		LockContract = new web3.eth.Contract(LockABI.ABI, address);
 		const signers = await web3.eth.getAccounts();
-		
-		Owner = signers[1];
+
+		let idx = (PROVIDER == "ganache") ? SIGNER_INDEX : 0;		
+		Owner = signers[idx];
 		
 		console.log("Connected to Lock network from:" + Owner);
 		console.log("Contract address is:" + LockContract._address);
@@ -57,6 +61,45 @@ function Connect ({_setLockNet, _locknet}) {
 		};
 		return true;
 	}
+
+	async function createProvider () {
+
+		if (PROVIDER == "ganache") {
+			// Add provider (ganache)
+			const wsProvider = new Web3.providers.WebsocketProvider(ganacheUrl);
+			web3 = new Web3(wsProvider);
+			return true;
+		}
+		else {
+			// Add provider (Metamask)
+			if (window.ethereum) {
+				await window.ethereum.request({ method: "eth_requestAccounts" });
+				web3 = new Web3(window.ethereum);
+				return true;
+			}
+		} 
+	}
+
+    async function createMembership () {
+
+      const _secret = "-secret";
+      // Create identities for family members
+      const identity1 = new Identity("self"+_secret);
+      const identity2 = new Identity("spouse"+_secret);
+      const identity3 = new Identity("kid"+_secret);
+
+      const members = [identity1.commitment, identity2.commitment,
+                       identity3.commitment];
+      OwnerIdentity = identity1;
+      OwnerGroup = new Group(members);
+      console.log("Group(exported json):" + OwnerGroup.export());
+
+      let member = [OwnerGroup.members[0], OwnerGroup.members[1],
+                    OwnerGroup.members[2]];
+      let root = OwnerGroup.root;
+      OwnerGroupInfo = {member, root};
+      return true;
+    };   
 
 	return (
 		<div className="Connect">
@@ -79,9 +122,11 @@ function Connect ({_setLockNet, _locknet}) {
 				disabled={Connected}
 				onClick={async () => {
 					console.log("Pressed");
-					let ret1 = await createContractInstance();
-					let ret2 = await createWebSocketInstance();
-					Connected = ret1 && ret2;
+					let ret1 = await createProvider();
+					let ret2 = await createMembership();
+					let ret3 = await createContractInstance();
+					let ret4 = await createWebSocketInstance();
+					Connected = ret1 && ret2 && ret3 && ret4;
 					if (Connected) {
 						_setLockNet({..._locknet,
 							'contract': LockContract, 'connected': true});
@@ -96,6 +141,9 @@ function Connect ({_setLockNet, _locknet}) {
 
 export {Connect};
 export {Owner};
+export {OwnerIdentity};
+export {OwnerGroup};
+export {OwnerGroupInfo};
 export {LockContract};
 export {Connected};
 export {WS};

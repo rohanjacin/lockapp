@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Owner, LockContract, Connected, WS, web3 } from "./Connect";
 import { Guest, Nonce, GuestApproved } from "./Approve";
 import Spinner from 'react-bootstrap/Spinner';
-
 import BN from "bn.js";
 
 // Challenge and Response values
@@ -57,13 +56,13 @@ function Authorize ({_setChallengeResponse, _challengeresponse}) {
 			let data = event.returnValues;
 			console.log("Guest:" + data.guest);
 			console.log("Owner:" + data.owner);
-			console.log("Challenge:" + JSON.stringify(data.ctx.locknonce));
+			console.log("Challenge:" + JSON.stringify(data.nonce));
 
 			//Challenge = data.ctx.locknonce;
-			_setChallengeResponse({..._challengeresponse, 'challenge': data.ctx.locknonce});
+			_setChallengeResponse({..._challengeresponse, 'challenge': data.nonce});
 			
 			// Send request to server handshake
-			let locknonce = data.ctx.locknonce;
+			let locknonce = data.nonce;
 			let _nonce0 = locknonce[0].split("0x");
 			let _nonce1 = locknonce[1].split("0x");
 			let _seed = locknonce[2].split("0x");
@@ -82,6 +81,8 @@ function Authorize ({_setChallengeResponse, _challengeresponse}) {
 			Challenge = lock_nounce; 
 			challenge = Challenge;
 			setChallenge(challenge);
+			ownerproof = "Calculating proof... (proving time ~ 5 mins)";
+			setOwnerproof(ownerproof);
 
 			// Send challenge to backend
 			let msg = {type: 'Challenge', nonce: lock_nounce};
@@ -104,13 +105,12 @@ function Authorize ({_setChallengeResponse, _challengeresponse}) {
 		let hmac = Uint8Array.from(nonce.slice(163, 195));
 		const rspnonce = {nonce0, nonce1, seed, counter, hmac};
 
-		ownerproof = "Loading...";
-		setOwnerproof(ownerproof);
 		// Create proof here : TDB
 		let p = OwnerProof;
 		console.log("P:" + JSON.stringify(p));
 		await LockContract.methods.responseAuth(Guest, rspnonce,
-			p.proof[0], p.proof[1], p.proof[2], p.publicSignals).send({from: Owner, gas: 1000000});
+			p.proof[0], p.proof[1], p.proof[2], p.publicSignals).
+			send({from: Owner, gas: 1000000});
 	}
 
 	return (

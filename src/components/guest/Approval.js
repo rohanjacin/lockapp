@@ -39,16 +39,16 @@ function Approval ({_setOwnerNonce, _ownernonce}) {
 			let data = event.returnValues;
 			console.log("Guest:" + data.guest);
 			console.log("Owner:" + data.owner);
-			console.log("nonce0:" + data.ctx.nonce0);
+			console.log("nonce:" + data.nonce);
 
 			Owner = data.owner;
 			OwnerApproved = true;
 
-			let _nonce0 = data.ctx.nonce0;
-			_nonce0 = _nonce0.split("0x");
-			_nonce0 = new BN(_nonce0[1], 16).toArray(65);
+			let _nonce = data.nonce;
+			_nonce = _nonce.split("0x");
+			_nonce = new BN(_nonce[1], 16).toArray(65);
 
-			Nonce = _nonce0;
+			Nonce = _nonce;
 			nonce = Nonce;
 			setNonce(nonce);
 
