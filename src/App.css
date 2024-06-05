@@ -1,5 +1,9 @@
 .App {
   text-align: center;
+  font: "30px";
+  width: "690px";
+  height: "42px";
+  color: ;
 }
 
 .Connect {
@@ -19,7 +23,6 @@
 }
 
 .Approve {
-  align-items: left;
   text-align: center;
   font: "30px";
   width: "690px";
@@ -33,6 +36,15 @@
   width: "690px";
   height: "42px";
   color: ;
+}
+
+.Messaging {
+  text-align: top;
+  font: "30px";
+  width: "690px";
+  height: "42px";
+  color: ;
+
 }
 
 .App-logo {

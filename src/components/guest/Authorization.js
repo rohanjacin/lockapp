@@ -10,13 +10,15 @@ import BN from "bn.js";
 // Challenge and Response values
 var Challenge = null;
 var Response = null;
+var Result = null;
 
 // Request authorization from owner following which push the challenge
 // to the lock and accept the response to be sent to the owner 
 function Authorization ({_setChallengeResponse, _challengeresponse}) {
 	let [challenge, setChallenge] = useState('');
 	let [response, setResponse] = useState('');
-	let [offchainsecret, setOffChainSecret] = useState('');
+	let [result, setResult] = useState('');
+	let [pairingsecret, setPairingSecret] = useState('');
 
 	// When connected listen to contract events
 	useEffect(() => {
@@ -43,6 +45,23 @@ function Authorization ({_setChallengeResponse, _challengeresponse}) {
 			Response = _challengeresponse.response;
 		}
 	}, [_challengeresponse.response]);
+
+	// Update result when received from lock
+	useEffect(() => {
+		if ((_challengeresponse.status != '') ||
+			(_challengeresponse.pin != '') ||
+		    (_challengeresponse.shared_key != '') ||
+		    (_challengeresponse.shared_msg_key != '')) {
+			console.log("result updated");
+			Result = {'status': _challengeresponse.status,
+					'pin': _challengeresponse.pin,
+					'shared_key': _challengeresponse.shared_key,
+					'shared_msg_key': _challengeresponse.shared_msg_key};
+			result = Result;
+			setResult(result)
+		}
+	}, [_challengeresponse.status, _challengeresponse.shared_key,
+		_challengeresponse.shared_msg_key]);
 
 	// Register for messages/events from the Lock contract
 	function listen () {
@@ -75,9 +94,11 @@ function Authorization ({_setChallengeResponse, _challengeresponse}) {
 			Response = respnonce;
 			response = Response;
 			setResponse(response);
-		
+
+			console.log("pairingsecret:" + pairingsecret);
 			// Send response to lock
-			let msg = {type: 'Response', nonce: respnonce};
+			let msg = {type: 'Response', nonce: respnonce,
+						secret: pairingsecret};
 			WS.send(JSON.stringify(msg));
 		});
 	}
@@ -120,17 +141,18 @@ function Authorization ({_setChallengeResponse, _challengeresponse}) {
 			&nbsp; (from Lock to Owner via Guest)
 			<br />
 			<br />
-			Off-chain secret :
+			Pairing secret :
 			&nbsp; &nbsp;			
-			<input placeholder={"hexadecimal string" || {offchainsecret}}
+			<input placeholder={"string" || {pairingsecret}}
 				style={{height:"42px", width:"420px"}}
 				type="text"
 				onChange={(event) => {
-					setOffChainSecret(event.target.value)
+					console.log("ONCHANGE:" + event.target.value);
+					setPairingSecret(event.target.value)
 				}}
-				value={offchainsecret}
+				value={pairingsecret}
 			/>
-			&nbsp; (from Owner to Guest)
+			&nbsp; (from Guest to Lock)
 			<br />
 			<br />
 			Response :
@@ -144,7 +166,19 @@ function Authorization ({_setChallengeResponse, _challengeresponse}) {
 			&nbsp; (from Owner to Lock via Guest)						
 			&nbsp; &nbsp;
 			<br />
-			<br />			
+			<br />
+			Status: {result.status}
+			<br />
+			<br />
+			PIN: {result.pin}
+			<br />
+			<br />
+			Key: {result.shared_key}
+			<br />
+			<br />
+			MsgKey: {result.shared_msg_key}
+			<br />
+			<br />
 			<button
 				style={{padding:"12px", border:"none"}}			
 				disabled={!OwnerApproved}

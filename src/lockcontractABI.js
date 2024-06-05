@@ -60,6 +60,12 @@ const ABI =
           "internalType": "bytes",
           "name": "nonce",
           "type": "bytes"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "signature",
+          "type": "bytes"
         }
       ],
       "name": "GuestApproved",
@@ -201,6 +207,12 @@ const ABI =
           "internalType": "bool",
           "name": "isOwnerVerfied",
           "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "signature",
+          "type": "bytes"
         }
       ],
       "name": "RespondAuth",
@@ -216,6 +228,11 @@ const ABI =
         {
           "internalType": "bytes",
           "name": "nonce",
+          "type": "bytes"
+        },
+        {
+          "internalType": "bytes",
+          "name": "signature",
           "type": "bytes"
         }
       ],
@@ -584,6 +601,11 @@ const ABI =
           "internalType": "uint256[16]",
           "name": "_publicSignals",
           "type": "uint256[16]"
+        },
+        {
+          "internalType": "bytes",
+          "name": "signature",
+          "type": "bytes"
         }
       ],
       "name": "responseAuth",

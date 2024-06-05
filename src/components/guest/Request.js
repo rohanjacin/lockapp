@@ -42,7 +42,7 @@ function Request ({_setBasebid, _basebid}) {
 
 		if (GuestIdentity) {
 			proof = await generateProof(GuestIdentity, OwnerGroup, message, scope);
-			gas = 0;
+			gas = 900000; // min tx fees
 			console.log("Proof:",  proof);
 		}
 

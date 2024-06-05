@@ -80,26 +80,26 @@ function Connect ({_setLockNet, _locknet}) {
 		} 
 	}
 
-    async function createMembership () {
+  async function createMembership () {
 
-      const _secret = "-secret";
-      // Create identities for family members
-      const identity1 = new Identity("self"+_secret);
-      const identity2 = new Identity("spouse"+_secret);
-      const identity3 = new Identity("kid"+_secret);
+    const _secret = "-secret";
+    // Create identities for family members
+    const identity1 = new Identity("self"+_secret);
+    const identity2 = new Identity("spouse"+_secret);
+    const identity3 = new Identity("kid"+_secret);
 
-      const members = [identity1.commitment, identity2.commitment,
-                       identity3.commitment];
-      OwnerIdentity = identity1;
-      OwnerGroup = new Group(members);
-      console.log("Group(exported json):" + OwnerGroup.export());
+    const members = [identity1.commitment, identity2.commitment,
+                     identity3.commitment];
+    OwnerIdentity = identity1;
+    OwnerGroup = new Group(members);
+    console.log("Group(exported json):" + OwnerGroup.export());
 
-      let member = [OwnerGroup.members[0], OwnerGroup.members[1],
-                    OwnerGroup.members[2]];
-      let root = OwnerGroup.root;
-      OwnerGroupInfo = {member, root};
-      return true;
-    };   
+    let member = [OwnerGroup.members[0], OwnerGroup.members[1],
+                  OwnerGroup.members[2]];
+    let root = OwnerGroup.root;
+    OwnerGroupInfo = {member, root};
+    return true;
+  };
 
 	return (
 		<div className="Connect">

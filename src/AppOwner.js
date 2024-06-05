@@ -3,6 +3,7 @@ import { Connect, WS } from "./components/owner/Connect";
 import { Register } from "./components/owner/Register";
 import { Approve } from "./components/owner/Approve";
 import { Authorize } from "./components/owner/Authorize";
+import { Messaging } from "./components/owner/Messaging";
 import './App.css';
 
 function AppOwner () {
@@ -80,6 +81,8 @@ function AppOwner () {
       <br />      
       <Authorize _setChallengeResponse={setChallengeResponse}
                _challengeresponse={challengeresponse}/>
+      <br />
+      <Messaging />
     </div>
   )
 }

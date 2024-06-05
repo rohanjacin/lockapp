@@ -4,6 +4,8 @@ import { Request, BidPriceSet } from "./components/guest/Request";
 import { Approval, OwnerApproved, Owner, Nonce } 
                                 from "./components/guest/Approval";
 import { Authorization, Challenge, Response } from "./components/guest/Authorization";
+import { Messaging } from "./components/guest/Messaging";
+
 import './App.css';
 
 function AppGuest () {
@@ -21,7 +23,8 @@ function AppGuest () {
   const [basebid, setBaseBid] = useState(basebidstatus);
 
   // Challenge Response values from nested Authorization component
-  const challengestatus = {challenge: '', response: ''}; 
+  const challengestatus = {challenge: '', response: '',
+               status: '', pin: '', shared_key: '', shared_msg_key: ''};
   const [challengeresponse, setChallengeResponse] = useState(challengestatus);
 
   // Lock connected to network handler 
@@ -73,7 +76,16 @@ function AppGuest () {
 
           // Update challenge in Authorization component
           setChallengeResponse({...challengeresponse, 'challenge': msg.nonce.data})
-        } 
+        }
+        else if (msg.type == 'Ack') {
+          console.log("Ack from lock");
+
+          // Update result in Authorization component
+          setChallengeResponse({...challengeresponse,
+            'status': msg.match, 'pin': msg.pin,
+            'shared_key': msg.shared_key.data,
+            'shared_msg_key': msg.shared_msg_key.data});
+        }
       }
   }
 
@@ -90,7 +102,9 @@ function AppGuest () {
                _ownernonce={ownernonce}/>
       <br />
       <Authorization _setChallengeResponse={setChallengeResponse}
-               _challengeresponse={challengeresponse}/>                     
+               _challengeresponse={challengeresponse}/>
+      <br />
+      <Messaging />
     </div>
   )
 }
